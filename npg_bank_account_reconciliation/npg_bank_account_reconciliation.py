@@ -348,7 +348,7 @@ class bank_acc_rec_statement(osv.osv):
                 account_precision)
             sres['difference_in_currency'] = round(
                 (statement.ending_balance_in_currency
-                 + sres['cleared_balance_in_currency']
+                 - sres['cleared_balance_in_currency']
                  - statement.starting_balance),
                 account_precision)
             sres['general_ledger_balance'] = self._get_gl_balance(
@@ -357,11 +357,6 @@ class bank_acc_rec_statement(osv.osv):
                 (statement.starting_balance
                  + sres['cleared_balance']
                  + sres['uncleared_balance']),
-                account_precision)
-            sres['registered_balance_in_currency'] = round(
-                (statement.starting_balance_in_currency
-                 + sres['cleared_balance_in_currency']
-                 + sres['uncleared_balance_in_currency']),
                 account_precision)
 
         return res
@@ -803,12 +798,6 @@ class bank_acc_rec_statement(osv.osv):
             help="General Ledger Balance",
             multi="balance"),
         'registered_balance': fields.function(
-            _get_balance, method=True, type='float',
-            string='Registered Balance',
-            digits_compute=dp.get_precision('Account'),
-            help="Initial balance + Cleared Balance + Uncleared Balance",
-            multi="balance"),
-        'registered_balance_in_currency': fields.function(
             _get_balance, method=True, type='float',
             string='Registered Balance',
             digits_compute=dp.get_precision('Account'),
