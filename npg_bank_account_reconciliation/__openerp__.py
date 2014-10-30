@@ -93,10 +93,12 @@ Direct Journal Entries
 Contributors
 ------------
 * Mathieu Benoit (mathieu.benoit@savoirfairelinux.com)
+* Vincent Vinet (vincent.vinet@savoirfairelinux.com)
 """,
     'author': 'NovaPoint Group LLC',
     'website': ' http://www.novapointgroup.com',
     'depends': [
+        'account_cutoff_base',
         'account_voucher',
         'report_webkit',
     ],
