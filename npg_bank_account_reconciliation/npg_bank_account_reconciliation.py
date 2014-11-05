@@ -178,10 +178,6 @@ class bank_acc_rec_statement(osv.osv):
             account_move_line_obj.write(cr, uid, line_ids, {'cleared_bank_account': False,
                                                             'bank_acc_rec_statement_id': False,
                                                             }, context=context)
-            # Reset 'Cleared' in statement lines
-            statement_line_obj.write(cr, uid, statement_line_ids, {'cleared_bank_account': False,
-                                                                   'research_required': False
-                                                                   }, context=context)
             # Reset statement
             self.write(cr, uid, [statement.id], {'state': 'draft',
                                                  'verified_by_user_id': False,
