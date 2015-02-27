@@ -20,6 +20,8 @@
 #
 ##############################################################################
 
-import npg_bank_account_reconciliation
-import account_move_line
-import report
+from . import (
+    bank_account_reconciliation,
+    account_move_line,
+    report
+)

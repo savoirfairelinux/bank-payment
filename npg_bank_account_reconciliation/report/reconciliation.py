@@ -28,16 +28,16 @@ class Reconciliation(report_sxw.rml_parse):
 
 
 report_sxw.report_sxw(
-    'report.detailed.reconciliation.webkit',
+    'report.detailed.reco.webkit',
     'bank.acc.rec.statement',
-    'addons/deposit_ticket_report_webkit/report/detailed_reconciliation.mako',
+    'addons/npg_bank_account_reconciliation/report/detailed_report.mako',
     parser=Reconciliation,
 )
 
 
 report_sxw.report_sxw(
-    'report.summary.reconciliation.webkit',
+    'report.summary.rec.webkit',
     'bank.acc.rec.statement',
-    'addons/deposit_ticket_report_webkit/report/summary_reconciliation.mako',
+    'addons/npg_bank_account_reconciliation/report/summary_report.mako',
     parser=Reconciliation
 )

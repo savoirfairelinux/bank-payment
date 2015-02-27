@@ -17,6 +17,10 @@
       }
       .cell {
       border:none;
+      width:2px;
+      }
+      .cell_invisible {
+      width:5px;
       }
       .col_header {
       font-weight:bold;
@@ -41,16 +45,14 @@
       text-align:right;
       width:100px;
       }
-      .line_sum {
+      .with_border {
+      font-weight:bold;
       border-style:solid;
       border-width:0px;
-      border-bottom-width:5px;
+      border-bottom-width:1px;
       }
       .first_item {
       text-align:center;
-      border-style:solid;
-      border-width:0px;
-      border-bottom-width:8px;
       }
       ${css}
     </style>
@@ -61,30 +63,32 @@
         <tr>
           <td class="cell first_item important_number_table"
              colspan="6">
-            ${_("Detailed %s account:") % rec.name} ${rec.account_id.code} -
-            ${rec.account_id.name}
+            ${_("Detailed statement %s") % rec.name}
+            <br/>
+            ${_("Account: %s - %s") % (rec .account_id.code, rec.account_id.name)}
           </td>
         </tr>
     </table>
+    <br/>
     <table style="width:100%;font-size:70%;">
       <thead>
           <tr>
-            <td class="col_header">
+            <td class="cell_invisible with_border">
             </td>
-            <td class="col_header">
+            <td class="cell_invisible with_border">
             </td>
-            <td class="col_header">
+            <td class="cell_invisible with_border">
             </td>
-            <td class="line_sum col_date">
+            <td class="with_border col_date">
               ${_("Date")}
             </td>
-            <td class="line_sum">
+            <td class="with_border">
               ${_("Reference")}
             </td>
-            <td class="line_sum col_partner">
+            <td class="with_border col_partner">
               ${_("Partner")}
             </td>
-            <td class="col_amount line_sum">
+            <td class="col_amount with_border">
               ${_("Amount")}
             </td>
           </tr>
@@ -93,50 +97,50 @@
         <td class="left_col cell col_header col_header_first" colspan="4">
           ${_("Beginning Balance")}
         </td>
-        <td>
+        <td class="col_header">
         </td>
-        <td>
+        <td class="cell_invisible">
         </td>
         <td class="cell right_col">
           ${formatLang(rec.starting_balance, monetary=True, currency_obj=rec.company_id.currency_id)}
         </td>
       </tr>
       <tr>
-        <td>
+        <td class="cell_invisible">
         </td>
         <td class="cell col_header" colspan="4">
           ${_("Cleared Transactions")}
         </td>
-        <td>
+        <td class="cell_invisible">
         </td>
         <td class="cell right_col">
         </td>
       </tr>
       <tr>
-        <td>
+        <td class="cell_invisible">
         </td>
-        <td>
+        <td class="cell_invisible">
         </td>
         <td class="cell col_header col_header_third" colspan="4">
           ${_("Deposits and Credits")}${" - %s " % int(rec.sum_of_debits_lines)}${_("items")}
         </td>
-        <td class="cell right_col">
+        <td class="cell right_col with_border">
           ${formatLang(rec.sum_of_debits, monetary=True, currency_obj=rec.company_id.currency_id)}
         </td>
       </tr>
       %for rec_line in [line for line in rec.debit_move_line_ids if line.cleared_bank_account]:
       <tr>
-        <td class="cell">
+        <td class="cell_invisible">
         </td>
-        <td class="cell">
+        <td class="cell_invisible">
         </td>
-        <td class="cell">
+        <td class="cell_invisible">
         </td>
         <td class="col_date">
           ${rec_line.date}
         </td>
         <td>
-          ${rec_line.ref and rec_line.ref or ""}
+         ${"%s - %s" %(rec_line.move_line_id.move_id.name, rec_line.move_line_id.name)}
         </td>
         <td class="col_partner">
           ${rec_line.partner_id.name and rec_line.partner_id.name or ""}
@@ -152,9 +156,9 @@
         <td>
         </td>
         <td class="cell col_header col_header_third" colspan="4">
-          ${_("Cheques and Debits")}${" - %s " % int(rec.sum_of_credits_lines)}${_("items")}
+          ${_("Checks and Debits")}${" - %s " % int(rec.sum_of_credits_lines)}${_("items")}
         </td>
-        <td class="cell line_sum right_col">
+        <td class="cell with_border right_col">
           ${formatLang(-rec.sum_of_credits, monetary=True, currency_obj=rec.company_id.currency_id)}
         </td>
       </tr>
@@ -188,7 +192,7 @@
         </td>
         <td>
         </td>
-        <td class="cell right_col line_sum">
+        <td class="cell right_col with_border">
           ${formatLang(rec.cleared_balance, monetary=True, currency_obj=rec.company_id.currency_id)}
         </td>
       </tr>
@@ -223,7 +227,7 @@
         <td class="cell col_header col_header_third" colspan="4">
           ${_("Deposits and Credits")}${" - %s " % int(rec.sum_of_debits_lines_unclear)}${_("items")}
         </td>
-        <td class="cell right_col">
+        <td class="cell right_col with_border">
           ${formatLang(rec.sum_of_debits_unclear, monetary=True, currency_obj=rec.company_id.currency_id)}
         </td>
       </tr>
@@ -255,9 +259,9 @@
         <td>
         </td>
         <td class="cell col_header col_header_third" colspan="4">
-          ${_("Cheques and Debits")}${" - %s " % int(rec.sum_of_credits_lines_unclear)}${_("items")}
+          ${_("Checks and Debits")}${" - %s " % int(rec.sum_of_credits_lines_unclear)}${_("items")}
         </td>
-        <td class="cell right_col line_sum">
+        <td class="cell right_col with_border">
           ${formatLang(-rec.sum_of_credits_unclear, monetary=True, currency_obj=rec.company_id.currency_id)}
         </td>
       </tr>
@@ -291,13 +295,14 @@
         </td>
         <td>
         </td>
-        <td class="cell right_col line_sum">
+        <td class="cell right_col with_border">
           ${formatLang(rec.uncleared_balance, monetary=True, currency_obj=rec.company_id.currency_id)}
         </td>
       </tr>
       <tr>
         <td class="cell col_header col_header_first" colspan="5">
-          ${_("Register Balance as of")}${" %s" % formatLang(rec.ending_date, date=True, currency_obj=rec.company_id.currency_id)}
+          ${_("Registered Balance as of")}${" %s" % formatLang(rec
+          .ending_date, date=True, currency_obj=rec.company_id.currency_id)}
         </td>
         <td>
         </td>

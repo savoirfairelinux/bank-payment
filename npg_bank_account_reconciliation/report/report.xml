@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
-    <report id="report_reconciliation_summary"
+    <report id="report_rec_summary"
             model="bank.acc.rec.statement"
             auto="False"
-            name="detailed.reconciliation.webkit"
-            file="npg_bank_account_reconciliation/report/detailed_reconciliation.mako"
+            name="detailed.rec.webkit"
+            file="npg_bank_account_reconciliation/report/detailed_report.mako"
             string="Reconciliation detailed"
             report_type="webkit"/>
 
-    <report id="report_reconciliation_detailed"
+    <report id="report_rec_detailed"
             model="bank.acc.rec.statement"
             auto="False"
-            name="summary.reconciliation.webkit"
-            file="npg_bank_account_reconciliation/report/summary_reconciliation.mako"
+            name="summary.rec.webkit"
+            file="npg_bank_account_reconciliation/report/summary_report.mako"
             string="Reconciliation summary"
             report_type="webkit"/>
 
