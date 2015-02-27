@@ -91,11 +91,11 @@ Contributors
         'report_webkit',
     ],
     'init_xml': [],
-    'update_xml': ["security/npg_bank_account_reconciliation_security.xml",
+    'data': ["security/npg_bank_account_reconciliation_security.xml",
                    "security/ir.model.access.csv",
                    "npg_bank_account_reconciliation_view.xml",
                    "account_move_line_view.xml"],
-    'demo_xml': [],
+    'demo': [],
     'data': [
         'report/report.xml',
     ],
