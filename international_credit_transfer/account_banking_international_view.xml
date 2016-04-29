@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_banking_export_international_form" model="ir.ui.view">
+            <field name="name">account.banking.export.international.form</field>
+            <field name="model">banking.export.international</field>
+            <field name="arch" type="xml">
+                <form string="International Credit Transfer" version="7.0">
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <notebook>
+                        <page string="General Information">
+                            <group name="main">
+                                <field name="total_amount" />
+                                <field name="nb_transactions" />
+                                <field name="batch_booking" />
+                                <field name="charge_bearer"/>
+                                <field name="create_date" />
+                                <field name="file" filename="filename"/>
+                                <field name="filename" invisible="True"/>
+                            </group>
+                        </page>
+                        <page string="Payment Orders">
+                            <field name="payment_order_ids" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_banking_export_international_tree" model="ir.ui.view">
+            <field name="name">account.banking.export.international.tree</field>
+            <field name="model">banking.export.international</field>
+            <field name="arch" type="xml">
+                <tree string="International Credit Transfer">
+                    <field name="filename"/>
+                    <field name="create_date"/>
+                    <field name="nb_transactions"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_account_banking_sepa" model="ir.actions.act_window">
+            <field name="name">International Credit Transfer Files</field>
+            <field name="res_model">banking.export.international</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <menuitem
+            id="menu_account_banking_international"
+            parent="account_payment.menu_main_payment"
+            action="action_account_banking_sepa"
+            sequence="15"
+            />
+
+        <act_window
+            id="act_banking_export_international_payment_order"
+            name="International Credit Transfer Files"
+            domain="[('payment_order_ids', '=', active_id)]"
+            res_model="banking.export.international"
+            src_model="payment.order"
+            view_type="form"
+            view_mode="tree,form"
+            />
+
+    </data>
+</openerp>

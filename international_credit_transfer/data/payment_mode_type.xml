@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+
+        <record id="export_international_pain_001_001_03" model="payment.mode.type">
+            <field name="name">International Credit Transfer v03 (recommended)</field>
+            <field name="code">pain.001.001.03</field>
+            <field name="suitable_bank_types" eval="[(6,0,[ref('base_iban.bank_iban')])]" />
+            <field name="ir_model_id" ref="model_banking_export_international_wizard"/>
+        </record>
+
+    </data>
+</openerp>

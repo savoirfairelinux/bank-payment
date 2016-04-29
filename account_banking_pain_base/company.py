@@ -36,13 +36,17 @@ class res_company(orm.Model):
     }
 
     def _get_initiating_party_identifier(
-            self, cr, uid, company_id, context=None):
+            self, cr, uid, ids, context=None):
         '''The code here may be different from one country to another.
         If you need to add support for an additionnal country, you can
         contribute your code here or inherit this function in the
         localization modules for your country'''
-        assert isinstance(company_id, int), 'Only one company ID'
-        company = self.browse(cr, uid, company_id, context=context)
+
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        assert len(ids) == 1, 'Only one company ID'
+
+        company = self.browse(cr, uid, ids[0], context=context)
         company_vat = company.vat
         party_identifier = False
         if company_vat:
