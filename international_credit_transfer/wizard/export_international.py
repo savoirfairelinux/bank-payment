@@ -190,8 +190,12 @@ class XmlGeneratorInternational(object):
             - 2.9 Code is not expected
 
             - 2.11 LocalInstrument is optional
-            - 2.12 Code is mandatory
+              This is reserved for specific cases of operations.
+              Will be implemented on demand.
+
             - 2.14 CategoryPurpose (composed) is optional
+              This field is used to specify the nature a high level priority
+              transaction. Will also be implemented on demand.
         """
         payment_type_info_2_6 = etree.SubElement(parent_node, 'PmtTpInf')
 
@@ -205,9 +209,13 @@ class XmlGeneratorInternational(object):
         Difference with SEPA credit transfers:
 
             - Choice between 2.43 InstructedAmount and 2.44 EquivalentAmount
+              For now, EquivalentAmount is not be implemented.
+
             - 2.47 ExchangeRateInformation is optional
-            - 2.51 ChargeBearer is optional for now, it is not implemented at
-              the transaction level.
+              For now, ExchangeRateInformation is not be implemented.
+
+            - 2.51 ChargeBearer is optional
+              For now, it is not implemented at the transaction level.
 
             - 2.89 RegulatoryReporting is required in some cases
             - 2.91 RelatedRemittanceInformation is optional
@@ -275,6 +283,43 @@ class XmlGeneratorInternational(object):
         debtor_agent_bic = etree.SubElement(debtor_agent_institution, 'BIC')
         debtor_agent_bic.text = self.debtor_bic
 
+    def generate_address(self, parent_node, partner):
+        address = etree.SubElement(parent_node, 'PstlAdr')
+
+        def generate_address_line(text):
+            line = etree.SubElement(address, 'AdrLine')
+            line.text = text
+
+        if partner.zip:
+            line = etree.SubElement(address, 'PstCd')
+            line.text = partner.zip[0:16]
+
+        if partner.city:
+            line = etree.SubElement(address, 'TwnNm')
+            line.text = partner.city[0:35]
+
+        if partner.state_id:
+            line = etree.SubElement(address, 'CtrySubDvsn')
+            line.text = partner.state_id.code
+
+        if partner.country_id:
+            line = etree.SubElement(address, 'Ctry')
+            line.text = partner.country_id.code
+
+        # If eventually Ultimate Creditor is filled,
+        # the address lines will be limited to only one occurence.
+        if len(partner.street) > 0:
+            generate_address_line(partner.street[0:70])
+
+        if len(partner.street) > 70:
+            generate_address_line(partner.street[70:])
+
+        if len(partner.street2) > 0:
+            generate_address_line(partner.street2[0:70])
+
+        if len(partner.street2) > 70:
+            generate_address_line(partner.street2[70:])
+
     def generate_party_block_cdtr(self, parent_node, line):
         """
         Difference with SEPA credit transfers:
@@ -298,6 +343,8 @@ class XmlGeneratorInternational(object):
         creditor_2_79 = etree.SubElement(parent_node, 'Cdtr')
         creditor_2_79_nm = etree.SubElement(creditor_2_79, 'Nm')
         creditor_2_79_nm.text = line.partner_id.name[0:70]
+
+        self.generate_address(creditor_2_79, line.partner_id)
 
         creditor_acct_2_80 = etree.SubElement(parent_node, 'CdtrAcct')
         creditor_acct_2_80_id = etree.SubElement(creditor_acct_2_80, 'Id')
